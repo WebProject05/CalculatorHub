@@ -5,17 +5,21 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { lazy, Suspense } from "react";
+
+// Import pages
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
-import { lazy, Suspense } from "react";
 
 // Lazy loaded calculator pages
 const MortgageCalculator = lazy(() => import("./pages/calculators/financial/MortgageCalculator"));
 const BMICalculator = lazy(() => import("./pages/calculators/health/BMICalculator"));
 const ScientificCalculator = lazy(() => import("./pages/calculators/math/ScientificCalculator"));
 const AgeCalculator = lazy(() => import("./pages/calculators/general/AgeCalculator"));
+const CompoundInterestCalculator = lazy(() => import("./pages/calculators/financial/CompoundInterestCalculator"));
 
+// Create query client
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -33,6 +37,11 @@ const App = () => (
                   <Route path="mortgage" element={
                     <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading calculator...</div>}>
                       <MortgageCalculator />
+                    </Suspense>
+                  } />
+                  <Route path="compound-interest" element={
+                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading calculator...</div>}>
+                      <CompoundInterestCalculator />
                     </Suspense>
                   } />
                 </Route>

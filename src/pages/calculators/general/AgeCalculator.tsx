@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, RefreshCw, Send } from "lucide-react";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { differenceInYears, differenceInMonths, differenceInDays, format } from "date-fns";
 import { calculateAge, formatDate } from "@/utils/calculators";
 import { Calendar } from "@/components/ui/calendar";

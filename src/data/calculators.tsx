@@ -1,4 +1,3 @@
-
 import {
   DollarSign,
   Home,
@@ -29,7 +28,6 @@ import {
   FileSpreadsheet,
   FilePlus2,
   Circle,
-  Trigonometry,
   LineChart,
   CalendarDays,
   Clock,
@@ -43,7 +41,6 @@ import {
   Car as CarIcon,
   Footprints,
   Leaf,
-  Zodiac,
   Truck,
   Heart as HeartIcon,
   Dice5,

@@ -5,9 +5,6 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Calculator } from "@/data/calculators";
 
-// Adding framer-motion dependency
-import { FramerMotion } from "framer-motion";
-
 interface CalculatorCardProps {
   calculator: Calculator;
   delay?: number;

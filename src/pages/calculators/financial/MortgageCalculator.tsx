@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download, Info, RefreshCw, Send } from "lucide-react";
 import { calculateMortgage, formatCurrency } from "@/utils/calculators";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const MortgageCalculator = () => {

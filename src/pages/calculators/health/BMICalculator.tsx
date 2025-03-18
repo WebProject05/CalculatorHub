@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download, Info, RefreshCw, Send } from "lucide-react";
 import { calculateBMI, getBMICategory, getBMIColor } from "@/utils/calculators";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 
 const BMICalculator = () => {

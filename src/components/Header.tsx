@@ -4,8 +4,18 @@ import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Moon, Sun, Search, Menu, X } from "lucide-react";
+import { Moon, Sun, Search, Menu, X, ChevronDown } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { calculators } from "@/data/calculators";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -14,6 +24,15 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Group calculators by category
+  const calculatorsByCategory = {
+    financial: calculators.filter((calc) => calc.category === "financial"),
+    health: calculators.filter((calc) => calc.category === "health"),
+    math: calculators.filter((calc) => calc.category === "math"),
+    general: calculators.filter((calc) => calc.category === "general"),
+    fun: calculators.filter((calc) => calc.category === "fun"),
+  };
 
   // Handle scroll effect
   useEffect(() => {
@@ -52,44 +71,154 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation with Dropdowns */}
           {!isMobile && (
-            <nav className="mx-6 flex items-center space-x-4 lg:space-x-6">
-              <Link 
-                to="/" 
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  location.pathname === "/" 
-                    ? "text-foreground" 
-                    : "text-muted-foreground"
-                }`}
-              >
-                Home
-              </Link>
-              <Link 
-                to="/calculators/financial/mortgage" 
-                className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
-              >
-                Financial
-              </Link>
-              <Link 
-                to="/calculators/health/bmi" 
-                className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
-              >
-                Health
-              </Link>
-              <Link 
-                to="/calculators/math/scientific" 
-                className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
-              >
-                Math
-              </Link>
-              <Link 
-                to="/calculators/general/age" 
-                className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
-              >
-                General
-              </Link>
-            </nav>
+            <NavigationMenu className="hidden md:flex mx-6">
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <Link to="/" className={`text-sm font-medium mr-4 transition-colors hover:text-primary ${
+                    location.pathname === "/" ? "text-foreground" : "text-muted-foreground"
+                  }`}>
+                    Home
+                  </Link>
+                </NavigationMenuItem>
+
+                {/* Financial Calculators */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="h-9 text-sm font-medium bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                    <span className="text-muted-foreground hover:text-primary">Financial</span>
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      {calculatorsByCategory.financial.map((calculator) => (
+                        <NavigationMenuLink asChild key={calculator.id}>
+                          <Link
+                            to={calculator.path}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-muted-foreground">{calculator.icon}</span>
+                              <div className="text-sm font-medium leading-none">{calculator.title}</div>
+                            </div>
+                            <p className="line-clamp-2 text-xs text-muted-foreground">
+                              {calculator.description}
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                {/* Health Calculators */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="h-9 text-sm font-medium bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                    <span className="text-muted-foreground hover:text-primary">Health</span>
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      {calculatorsByCategory.health.map((calculator) => (
+                        <NavigationMenuLink asChild key={calculator.id}>
+                          <Link
+                            to={calculator.path}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-muted-foreground">{calculator.icon}</span>
+                              <div className="text-sm font-medium leading-none">{calculator.title}</div>
+                            </div>
+                            <p className="line-clamp-2 text-xs text-muted-foreground">
+                              {calculator.description}
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                {/* Math Calculators */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="h-9 text-sm font-medium bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                    <span className="text-muted-foreground hover:text-primary">Math</span>
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      {calculatorsByCategory.math.map((calculator) => (
+                        <NavigationMenuLink asChild key={calculator.id}>
+                          <Link
+                            to={calculator.path}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-muted-foreground">{calculator.icon}</span>
+                              <div className="text-sm font-medium leading-none">{calculator.title}</div>
+                            </div>
+                            <p className="line-clamp-2 text-xs text-muted-foreground">
+                              {calculator.description}
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                {/* General Calculators */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="h-9 text-sm font-medium bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                    <span className="text-muted-foreground hover:text-primary">General</span>
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      {calculatorsByCategory.general.map((calculator) => (
+                        <NavigationMenuLink asChild key={calculator.id}>
+                          <Link
+                            to={calculator.path}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-muted-foreground">{calculator.icon}</span>
+                              <div className="text-sm font-medium leading-none">{calculator.title}</div>
+                            </div>
+                            <p className="line-clamp-2 text-xs text-muted-foreground">
+                              {calculator.description}
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                {/* Fun Calculators */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="h-9 text-sm font-medium bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                    <span className="text-muted-foreground hover:text-primary">Fun</span>
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      {calculatorsByCategory.fun.map((calculator) => (
+                        <NavigationMenuLink asChild key={calculator.id}>
+                          <Link
+                            to={calculator.path}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-muted-foreground">{calculator.icon}</span>
+                              <div className="text-sm font-medium leading-none">{calculator.title}</div>
+                            </div>
+                            <p className="line-clamp-2 text-xs text-muted-foreground">
+                              {calculator.description}
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           )}
 
           <div className="flex items-center gap-4">

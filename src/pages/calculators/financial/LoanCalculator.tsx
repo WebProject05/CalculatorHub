@@ -418,7 +418,7 @@ const LoanCalculator = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                    <Tooltip formatter={(value) => formatCurrency(value as number)} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -495,7 +495,7 @@ const LoanCalculator = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="paymentNumber" label={{ value: 'Year', position: 'insideBottomRight', offset: -5 }} />
                       <YAxis tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`} />
-                      <Tooltip formatter={(value) => formatCurrency(value)} />
+                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
                       <Legend />
                       <Bar dataKey="principalPayment" name="Principal" stackId="a" fill="#3b82f6" />
                       <Bar dataKey="interestPayment" name="Interest" stackId="a" fill="#ef4444" />

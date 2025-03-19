@@ -9,7 +9,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download, Info, RefreshCw, Send } from "lucide-react";
 import { calculateMortgage, formatCurrency } from "@/utils/calculators";
 import { toast } from "sonner";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, TooltipProps } from 'recharts';
+import { downloadAsPDF } from "@/utils/pdfUtils";
+
+interface AmortizationData {
+  year: number;
+  balance: number;
+  paid: number;
+}
 
 const MortgageCalculator = () => {
   // State for form inputs
@@ -27,7 +34,7 @@ const MortgageCalculator = () => {
   const [monthlyPropertyTax, setMonthlyPropertyTax] = useState(0);
   const [monthlyHomeInsurance, setMonthlyHomeInsurance] = useState(0);
   const [showResults, setShowResults] = useState(false);
-  const [amortizationData, setAmortizationData] = useState<any[]>([]);
+  const [amortizationData, setAmortizationData] = useState<AmortizationData[]>([]);
   
   // Sync down payment amount and percentage
   useEffect(() => {
@@ -95,7 +102,7 @@ const MortgageCalculator = () => {
     monthlyPIPayment: number
   ) => {
     let balance = loanAmount;
-    let yearlyData = [];
+    let yearlyData: AmortizationData[] = [];
     
     // Get yearly data points to avoid overcrowding the chart
     for (let year = 0; year <= loanTerm; year++) {
@@ -147,8 +154,13 @@ const MortgageCalculator = () => {
   };
   
   const handleDownloadPDF = () => {
+    downloadAsPDF('calculator-results', `mortgage-calculator-results.pdf`);
     toast.success("PDF download started");
-    // In a real app, this would generate and download a PDF
+  };
+  
+  // Custom formatter for chart tooltip
+  const CustomTooltipFormatter = (value: number) => {
+    return formatCurrency(value);
   };
   
   return (
@@ -230,7 +242,7 @@ const MortgageCalculator = () => {
                 <Label htmlFor="loanTerm">Loan Term</Label>
                 <span className="text-sm text-muted-foreground">{loanTerm} years</span>
               </div>
-              <Tabs defaultValue="30" className="w-full" onValueChange={(value) => setLoanTerm(parseInt(value))}>
+              <Tabs defaultValue={loanTerm.toString()} className="w-full" onValueChange={(value) => setLoanTerm(parseInt(value))}>
                 <TabsList className="grid grid-cols-3 w-full">
                   <TabsTrigger value="15">15 Years</TabsTrigger>
                   <TabsTrigger value="20">20 Years</TabsTrigger>
@@ -310,7 +322,7 @@ const MortgageCalculator = () => {
         </Card>
         
         {/* Results */}
-        <Card className={`lg:col-span-2 shadow-sm transition-opacity duration-500 ${showResults ? 'opacity-100' : 'opacity-50'}`}>
+        <Card id="calculator-results" className={`lg:col-span-2 shadow-sm transition-opacity duration-500 ${showResults ? 'opacity-100' : 'opacity-50'}`}>
           <CardHeader>
             <CardTitle>Mortgage Results</CardTitle>
             <CardDescription>
@@ -384,7 +396,7 @@ const MortgageCalculator = () => {
                         tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                       />
                       <Tooltip 
-                        formatter={(value) => formatCurrency(value as number)}
+                        formatter={(value) => [formatCurrency(value as number), ""]}
                         labelFormatter={(value) => `Year ${value}`}
                       />
                       <Legend />

@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download, Info, RefreshCw, Send } from "lucide-react";
 import { calculateMortgage, formatCurrency } from "@/utils/calculators";
 import { toast } from "sonner";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, TooltipProps } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { downloadAsPDF } from "@/utils/pdfUtils";
 
 interface AmortizationData {
@@ -111,10 +111,17 @@ const MortgageCalculator = () => {
       
       if (year > 0) {
         const monthsElapsed = year * 12;
-        currentBalance = 
-          loanAmount * 
-          (Math.pow(1 + monthlyRate, numberOfPayments) - Math.pow(1 + monthlyRate, monthsElapsed)) / 
-          (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+        
+        // Calculate remaining balance using the amortization formula
+        if (monthlyRate > 0) {
+          currentBalance = 
+            loanAmount * 
+            (Math.pow(1 + monthlyRate, numberOfPayments) - Math.pow(1 + monthlyRate, monthsElapsed)) / 
+            (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+        } else {
+          // For 0% interest loans
+          currentBalance = loanAmount - (loanAmount / numberOfPayments) * monthsElapsed;
+        }
         
         // Ensure we don't get negative balance at the end
         if (currentBalance < 0) currentBalance = 0;

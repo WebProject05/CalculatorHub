@@ -211,9 +211,9 @@ const QuadraticEquationSolver = () => {
               <strong>Step 2:</strong> Determine the type of roots based on the discriminant:
             </p>
             <ul className="list-disc list-inside my-2">
-              <li>If Δ > 0: Two distinct real roots</li>
+              <li>If Δ &gt; 0: Two distinct real roots</li>
               <li>If Δ = 0: One real root (repeated)</li>
-              <li>If Δ < 0: Two complex conjugate roots</li>
+              <li>If Δ &lt; 0: Two complex conjugate roots</li>
             </ul>
             
             <p>
